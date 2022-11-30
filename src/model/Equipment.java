@@ -6,6 +6,13 @@ public class Equipment {
     private double deposit;
     private int amount;
 
+    public Equipment(String name, double costPerDay, double deposit, int amount) {
+        this.name = name;
+        this.costPerDay = costPerDay;
+        this.deposit = deposit;
+        this.amount = amount;
+    }
+
     public String getName() {
         return name;
     }
