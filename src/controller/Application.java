@@ -53,6 +53,29 @@ public class Application {
         application.rentalRequests.add(rr3);
 
         view.printRentalRequests(application.rentalRequests);
+
+        RentalExtensionRequest rer1 = new RentalExtensionRequest(rental1);
+        RentalExtensionRequest rer2 = new RentalExtensionRequest(rental2);
+        RentalExtensionRequest rer3 = new RentalExtensionRequest(rental3);
+
+        application.rentalExtensionRequests.add(rer1);
+        application.rentalExtensionRequests.add(rer2);
+        application.rentalExtensionRequests.add(rer3);
+
+        view.printRentalExtensionRequests(application.rentalExtensionRequests);
+
+        EquipmentLostReport elr1 = new EquipmentLostReport(rental1);
+        EquipmentLostReport elr2 = new EquipmentLostReport(rental2);
+        EquipmentLostReport elr3 = new EquipmentLostReport(rental3);
+
+        application.equipmentLostReports.add(elr1);
+        application.equipmentLostReports.add(elr2);
+        application.equipmentLostReports.add(elr3);
+
+        view.printEquipmentLostReports(application.equipmentLostReports);
+
+        view.getIntInput();
+        view.getIntInput();
     }
 
     public boolean employeeLogin() {
