@@ -14,17 +14,22 @@ public class View {
 
     public void printCatalogue(ArrayList<Equipment> catalogue) {
         printMessage("Aktualny katalog:\n");
+        int equipmentNumber = 1;
         for (Equipment equipment : catalogue) {
+            printMessage(String.format("%-20s", "Numer w katalogu: ") + equipmentNumber);
             printMessage(String.format("%-20s", "Nazwa: ") + equipment.getName());
             printMessage(String.format("%-20s", "Cena za dzień: ") + equipment.getCostPerDay());
             printMessage(String.format("%-20s", "Kaucja: ") + equipment.getDeposit());
             printMessage(String.format("%-20s", "Ilość sztuk: ") + equipment.getAmount() + "\n");
+            equipmentNumber++;
         }
     }
 
     public void printRentals(ArrayList<Rental> rentals) {
         printMessage("Lista wypozyczen:\n");
+        int rentalNumber = 1;
         for (Rental rental : rentals) {
+            printMessage(String.format("%-20s", "Numer wypozyczenia: ") + rentalNumber);
             printMessage(
                     String.format("%-20s", "Klient: ")
                             + rental.getClient().getName()
@@ -34,12 +39,15 @@ public class View {
             printMessage(String.format("%-20s", "Nazwa sprzętu: ") + rental.getEquipment().getName());
             printMessage(String.format("%-20s", "Ilosc sztuk: ") + rental.getAmount());
             printMessage(String.format("%-20s", "Pozostalo dni: ") + rental.getDaysLeft() + "\n");
+            rentalNumber++;
         }
     }
 
     public void printRentalRequests(ArrayList<RentalRequest> rentalRequests) {
         printMessage("Lista prosb o wypozyczenie:\n");
+        int rentalRequestNumber = 1;
         for (RentalRequest rentalRequest : rentalRequests) {
+            printMessage(String.format("%-20s", "Numer prosby: ") + rentalRequestNumber);
             printMessage(
                     String.format("%-20s", "Klient: ")
                             + rentalRequest.getClient().getName()
@@ -49,12 +57,15 @@ public class View {
             printMessage(String.format("%-20s", "Nazwa sprzętu: ") + rentalRequest.getEquipment().getName());
             printMessage(String.format("%-20s", "Ilosc sztuk: ") + rentalRequest.getAmount());
             printMessage(String.format("%-20s", "Ilosc dni: ") + rentalRequest.getRentalPeriod() + "\n");
+            rentalRequestNumber++;
         }
     }
 
     public void printRentalExtensionRequests(ArrayList<RentalExtensionRequest> rentalExtensionRequests) {
         printMessage("Lista prosb o przedluzenie wypozyczenia:\n");
+        int rentalExtensionRequestNumber = 1;
         for (RentalExtensionRequest request : rentalExtensionRequests) {
+            printMessage(String.format("%-20s", "Numer prosby: ") + rentalExtensionRequestNumber);
             printMessage(
                     String.format("%-20s", "Klient: ")
                             + request.getRental().getClient().getName()
@@ -64,12 +75,15 @@ public class View {
             printMessage(String.format("%-20s", "Nazwa sprzętu: ") + request.getRental().getEquipment().getName());
             printMessage(String.format("%-20s", "Ilosc sztuk: ") + request.getRental().getAmount());
             printMessage(String.format("%-20s", "Ilosc dni: ") + request.getRental().getDaysLeft() + "\n");
+            rentalExtensionRequestNumber++;
         }
     }
 
     public void printEquipmentLostReports(ArrayList<EquipmentLostReport> equipmentLostReports) {
         printMessage("Lista zgloszen zgubienia sprzetu:\n");
+        int equipmentLostReportNumber = 1;
         for (EquipmentLostReport lostReport : equipmentLostReports) {
+            printMessage(String.format("%-20s", "Numer zgloszenia: ") + equipmentLostReportNumber);
             printMessage(
                     String.format("%-20s", "Klient: ")
                             + lostReport.getRental().getClient().getName()
@@ -79,6 +93,7 @@ public class View {
             printMessage(String.format("%-20s", "Nazwa sprzętu: ") + lostReport.getRental().getEquipment().getName());
             printMessage(String.format("%-20s", "Ilosc sztuk: ") + lostReport.getRental().getAmount());
             printMessage(String.format("%-20s", "Kaucja: ") + lostReport.getRental().getEquipment().getDeposit() + "\n");
+            equipmentLostReportNumber++;
         }
     }
 
