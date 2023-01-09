@@ -113,6 +113,15 @@ public class View {
     }
 
     public void showEmployeeMenu() {
+        System.out.println("1. Wyświetl katalog");
+        System.out.println("2. Dodaj sprzęt do katalogu");
+        System.out.println("3. Usuń sprzęt z katalogu");
+        System.out.println("4. Wyświetl listę aktualnych wypożyczeń");
+        System.out.println("5. Rozpatrz prośby o wypożyczenie");
+        System.out.println("6. Rozpatrz prośby o przedłużenie wypożyczenia");
+        System.out.println("7. Rozpatrz zgloszenia zgubien sprzetu");
+        System.out.println("8. Wyloguj sie");
+        System.out.println("9. Wyjdź");
     }
 
     public String getStringInput() {
