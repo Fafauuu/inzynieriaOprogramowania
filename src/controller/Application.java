@@ -137,6 +137,11 @@ public class Application {
                 }
                 case 4:
                 {
+                    modifyEquipment();
+                    break;
+                }
+                case 5:
+                {
                     boolean isRentalListEmpty = allRentals.isEmpty();
                     if(isRentalListEmpty){
                         view.printMessage("BRAK WYPOZYCZEN!");
@@ -144,26 +149,26 @@ public class Application {
                     else view.printRentals(allRentals);
                     break;
                 }
-                case 5:
+                case 6:
                 {
                     decideRentalRequest();
                     break;
                 }
-                case 6:
+                case 7:
                 {
 					decideExtensionRequest();
                     break;
                 }
-                case 7:
+                case 8:
                 {
                     decideEquipmentLostReport();
                     break;
                 }
-                case 8:
+                case 9:
                 {
                     return true;
                 }
-                case 9:
+                case 0:
                 {
                     return false;
                 }
@@ -253,23 +258,9 @@ public class Application {
         equipmentLostReports.add(newEquipmentLostReport);
     }
 
-    public void createNewEquipment() {
-        view.printMessage("PODAJ NAZWE SPRZETU:");
-		String name = view.getStringInput();
-		view.printMessage("PODAJ CENE ZA DZIEN WYPOZYCZENIA:");
-		double oneDayCost = view.getDoubleInput();
-		view.printMessage("PODAJ KAUCJE:");
-		double deposit = view.getDoubleInput();
-		view.printMessage("PODAJ ILOSC SPRZETU:");
-		int amount = view.getIntInput();
-		view.printMessage("DODANO NOWY SPRZET DO KATALOGU!");
-        Equipment newEquipment = new Equipment(name, oneDayCost, deposit, amount);
-        catalogue.add(newEquipment);
-    }
-
     public void loadData() {
-        clients.add(new Client("Jan", "Kowalski", "jankowalski@gmail.com", "111222333"));
-        employees.add(new Employee("Krzysztof", "Nowak", "123456789"));
+        clients.add(new Client("Jan", "Kowalski", "j", "1"));
+        employees.add(new Employee("Krzysztof", "Nowak", "2"));
         catalogue.add(new Equipment("Narty", 50.00, 100, 10));
         catalogue.add(new Equipment("Kask", 20.00, 30, 50));
     }
@@ -313,11 +304,23 @@ public class Application {
         else {
             Client client = selectedRentalRequest.getClient();
             int rentalPeriod = selectedRentalRequest.getRentalPeriod();
-            Rental newRental = new Rental(client, rentedEquipment, rentAmount, rentalPeriod);
-            allRentals.add(newRental);
-            rentedEquipment.setAmount(currentAmount - rentAmount);
-            rentalRequests.remove(selectedRentalRequest);
-            view.printMessage("PROSBA ZOSTALA ZAAKCEPTOWANA");
+
+            view.printMessage("\nCZY CHCESZ ZAAKCEPTOWAC PROSBE?");
+            view.printMessage("1 - AKCEPTUJ");
+            view.printMessage("2 - ODRZUC");
+            int choice = view.getIntInput();
+            if (choice == 1) {
+                Rental newRental = new Rental(client, rentedEquipment, rentAmount, rentalPeriod);
+                allRentals.add(newRental);
+                rentedEquipment.setAmount(currentAmount - rentAmount);
+                rentalRequests.remove(selectedRentalRequest);
+                view.printMessage("PROSBA ZOSTALA ZAAKCEPTOWANA");
+            } else if (choice == 2) {
+                rentalRequests.remove(selectedRentalRequest);
+                view.printMessage("PROSBA ZOSTALA ODRZUCONA");
+            } else {
+                view.printMessage("WYBIERZ POPRAWNA OPCJE");
+            }
         }
     }
 
@@ -338,10 +341,22 @@ public class Application {
         else {
             RentalExtensionRequest selectedRequest = rentalExtensionRequests.get(input - 1);
             Rental selectedRental = selectedRequest.getRental();
-            int currentDaysLeft = selectedRental.getDaysLeft();
-            selectedRental.setDaysLeft(currentDaysLeft + 7);
-            rentalExtensionRequests.remove(selectedRequest);
-			view.printMessage("ZAAKCEPTOWANO PROSBE");
+
+            view.printMessage("\nCZY CHCESZ ZAAKCEPTOWAC PROSBE?");
+            view.printMessage("1 - AKCEPTUJ");
+            view.printMessage("2 - ODRZUC");
+            int choice = view.getIntInput();
+            if (choice == 1) {
+                int currentDaysLeft = selectedRental.getDaysLeft();
+                selectedRental.setDaysLeft(currentDaysLeft + 7);
+                rentalExtensionRequests.remove(selectedRequest);
+                view.printMessage("PROSBA ZOSTALA ZAAKCEPTOWANA");
+            } else if (choice == 2) {
+                rentalExtensionRequests.remove(selectedRequest);
+                view.printMessage("PROSBA ZOSTALA ODRZUCONA");
+            } else {
+                view.printMessage("WYBIERZ POPRAWNA OPCJE");
+            }
         }
     }
 
@@ -369,6 +384,20 @@ public class Application {
         }
     }
 
+    public void createNewEquipment() {
+        view.printMessage("PODAJ NAZWE SPRZETU:");
+        String name = view.getStringInput();
+        view.printMessage("PODAJ CENE ZA DZIEN WYPOZYCZENIA:");
+        double oneDayCost = view.getDoubleInput();
+        view.printMessage("PODAJ KAUCJE:");
+        double deposit = view.getDoubleInput();
+        view.printMessage("PODAJ ILOSC SPRZETU:");
+        int amount = view.getIntInput();
+        view.printMessage("DODANO NOWY SPRZET DO KATALOGU!");
+        Equipment newEquipment = new Equipment(name, oneDayCost, deposit, amount);
+        catalogue.add(newEquipment);
+    }
+
     public void deleteEquipment() {
         boolean isCatalogueEmpty = catalogue.isEmpty();
         if (isCatalogueEmpty) {
@@ -385,6 +414,86 @@ public class Application {
         else {
             catalogue.remove(input - 1);
             view.printMessage("USUNIETO SPRZET");
+        }
+    }
+
+    private void modifyEquipment() {
+        boolean isCatalogueEmpty = catalogue.isEmpty();
+        if (isCatalogueEmpty) {
+            view.printMessage("KATALOG JEST PUSTY!");
+            return;
+        }
+        else view.printCatalogue(catalogue);
+        view.printMessage("PODAJ NUMER SPRZETU KTORY CHCESZ MODYFIKOWAC: ");
+        int input = view.getIntInput();
+        int catalogueSize = catalogue.size();
+        if (input > catalogueSize || input < 1) {
+            view.printMessage("NIEPRAWIDLOWY NUMER SPRZETU");
+        }
+        else {
+            Equipment equipment = catalogue.get(input - 1);
+            view.printMessage("WYBIERZ POLE DO EDYCJI:");
+            view.printMessage("1 - NAZWA SPRZETU");
+            view.printMessage("2 - CENA ZA DZIEN WYPOZYCZENIA");
+            view.printMessage("3 - KAUCJA");
+            view.printMessage("4 - ILOSC SPRZETU");
+            view.printMessage("0 - POWROT");
+            int option = view.getIntInput();
+            switch (option) {
+                case 1:
+                {
+                    view.printMessage("POPRZEDNIA NAZWA: " + equipment.getName());
+                    view.printMessage("PODAJ NOWA NAZWE: ");
+                    String newName = view.getStringInput();
+                    equipment.setName(newName);
+                    view.printMessage("DANE ZOSTALY ZAKTUALIZOWANE");
+                    break;
+                }
+                case 2:
+                {
+                    view.printMessage("POPRZEDNIA CENA: " + equipment.getCostPerDay());
+                    view.printMessage("PODAJ NOWA CENE: ");
+                    double newCost = view.getDoubleInput();
+                    if (newCost >= 0) {
+                        equipment.setCostPerDay(newCost);
+                        view.printMessage("DANE ZOSTALY ZAKTUALIZOWANE");
+                    } else {
+                        view.printMessage("PODAJ POPRAWNE DANE");
+                    }
+                    break;
+                }
+                case 3:
+                {
+                    view.printMessage("POPRZEDNIA KAUCJA: " + equipment.getDeposit());
+                    view.printMessage("PODAJ NOWA KAUCJE: ");
+                    double newDeposit = view.getDoubleInput();
+                    if (newDeposit >= 0) {
+                        equipment.setDeposit(newDeposit);
+                        view.printMessage("DANE ZOSTALY ZAKTUALIZOWANE");
+                    } else {
+                        view.printMessage("PODAJ POPRAWNE DANE");
+                    }
+                    break;
+                }
+                case 4:
+                {
+                    view.printMessage("POPRZEDNIA ILOSC: " + equipment.getAmount());
+                    view.printMessage("PODAJ NOWA ILOSC: ");
+                    double newAmount = view.getDoubleInput();
+                    if (newAmount >= 0) {
+                        equipment.setDeposit(newAmount);
+                        view.printMessage("DANE ZOSTALY ZAKTUALIZOWANE");
+                    } else {
+                        view.printMessage("PODAJ POPRAWNE DANE");
+                    }
+                    break;
+                }
+                case 0:
+                {
+                    return;
+                }
+                default: view.printMessage("NIE MA TAKIEJ OPCJI!");
+            }
         }
     }
 }
